@@ -1,0 +1,26 @@
+# Stocker Scheduler Workflow
+
+name: Cron
+
+on:
+  # Triggers the workflow at every minute past every hour from 9 to 16 on every weekday.
+  # Please refer:
+  #   https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule
+  #   https://vercel.com/docs/solutions/cron-jobs
+  #   https://crontab.guru
+  schedule:
+    - cron: '* 9-16 * * 1-5'
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Stocker API
+        run: |
+          curl --request POST \
+          --url 'https://stocker-beta.vercel.app/api/cron' \
+          --header 'Authorization: Bearer ${{ secrets.STOCKER_API_KEY }}'
